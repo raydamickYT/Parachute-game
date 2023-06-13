@@ -88,7 +88,7 @@ struct Matrix
 /// \brief 4D vector type, used to set uniforms in GLSL
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 struct Vector4
 {
     ////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ struct Vector4
     /// \param W Component of the 4D vector
     ///
     ////////////////////////////////////////////////////////////
-    Vector4(T X, T Y, T Z, T W) :
+    Vector4(V X, V Y, V Z, V W) :
     x(X),
     y(Y),
     z(Z),
@@ -128,10 +128,10 @@ struct Vector4
     ////////////////////////////////////////////////////////////
     template <typename U>
     explicit Vector4(const Vector4<U>& other) :
-    x(static_cast<T>(other.x)),
-    y(static_cast<T>(other.y)),
-    z(static_cast<T>(other.z)),
-    w(static_cast<T>(other.w))
+    x(static_cast<V>(other.x)),
+    y(static_cast<V>(other.y)),
+    z(static_cast<V>(other.z)),
+    w(static_cast<V>(other.w))
     {
     }
 
@@ -148,8 +148,8 @@ struct Vector4
         copyVector(color, *this);
     }
 
-    T x; ///< 1st component (X) of the 4D vector
-    T y; ///< 2nd component (Y) of the 4D vector
-    T z; ///< 3rd component (Z) of the 4D vector
-    T w; ///< 4th component (W) of the 4D vector
+    V x; ///< 1st component (X) of the 4D vector
+    V y; ///< 2nd component (Y) of the 4D vector
+    V z; ///< 3rd component (Z) of the 4D vector
+    V w; ///< 4th component (W) of the 4D vector
 };

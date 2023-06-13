@@ -37,7 +37,7 @@ namespace sf
 /// \brief Pointer to a thread-local variable
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 class ThreadLocalPtr : private ThreadLocal
 {
 public:
@@ -48,7 +48,7 @@ public:
     /// \param value Optional value to initialize the variable
     ///
     ////////////////////////////////////////////////////////////
-    ThreadLocalPtr(T* value = NULL);
+    ThreadLocalPtr(V* value = NULL);
 
     ////////////////////////////////////////////////////////////
     /// \brief Overload of unary operator *
@@ -59,7 +59,7 @@ public:
     /// \return Reference to the thread-local variable
     ///
     ////////////////////////////////////////////////////////////
-    T& operator *() const;
+    V& operator *() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Overload of operator ->
@@ -70,7 +70,7 @@ public:
     /// \return Pointer to the thread-local variable
     ///
     ////////////////////////////////////////////////////////////
-    T* operator ->() const;
+    V* operator ->() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Conversion operator to implicitly convert the
@@ -79,7 +79,7 @@ public:
     /// \return Pointer to the actual object
     ///
     ////////////////////////////////////////////////////////////
-    operator T*() const;
+    operator V*() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Assignment operator for a raw pointer parameter
@@ -89,7 +89,7 @@ public:
     /// \return Reference to self
     ///
     ////////////////////////////////////////////////////////////
-    ThreadLocalPtr<T>& operator =(T* value);
+    ThreadLocalPtr<V>& operator =(V* value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Assignment operator for a ThreadLocalPtr parameter
@@ -99,7 +99,7 @@ public:
     /// \return Reference to self
     ///
     ////////////////////////////////////////////////////////////
-    ThreadLocalPtr<T>& operator =(const ThreadLocalPtr<T>& right);
+    ThreadLocalPtr<V>& operator =(const ThreadLocalPtr<V>& right);
 };
 
 } // namespace sf

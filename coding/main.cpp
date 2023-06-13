@@ -1,12 +1,14 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "CustomPhysics.h"
 
 #include "Entity.h"
 
 int main()
 {
+    int width = 1920, height = 1080;
     // window setup for width, height and name of the window
-    sf::RenderWindow window(sf::VideoMode(895, 660), "ParchuteGame Adam Bausch");
+    sf::RenderWindow window(sf::VideoMode(width, height), "ParchuteGame Adam Bausch");
     // background color, for when I'm not rendering a background
 
     sf::Texture background;
@@ -17,9 +19,10 @@ int main()
     }
     sf::Sprite backgroundSprite;
     backgroundSprite.setTexture(background);
-    backgroundSprite.setScale(3.5, 3.5);
+    backgroundSprite.setScale(window.getSize().x / background.getSize().x + .5f, window.getSize().y / background.getSize().y + .5f);
 
     Entity player(window.getSize().x / 4, window.getSize().y / 4);
+    player.FindImage();
 
     // dit is de update functie van de main script.
     //  alles wordt via deze functie aangeroepen.
@@ -33,13 +36,12 @@ int main()
                 window.close();
         }
 
-        // window.draw(backgroundSprite);
         window.clear();
         window.draw(backgroundSprite);
         player.Update();
         player.DrawTo(window);
+        // window.draw(player.Player);
         window.display();
     }
-
     return 0;
 }

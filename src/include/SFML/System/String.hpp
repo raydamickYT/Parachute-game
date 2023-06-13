@@ -168,8 +168,8 @@ public:
     /// \see fromUtf16, fromUtf32
     ///
     ////////////////////////////////////////////////////////////
-    template <typename T>
-    static String fromUtf8(T begin, T end);
+    template <typename V>
+    static String fromUtf8(V begin, V end);
 
     ////////////////////////////////////////////////////////////
     /// \brief Create a new sf::String from a UTF-16 encoded string
@@ -182,8 +182,8 @@ public:
     /// \see fromUtf8, fromUtf32
     ///
     ////////////////////////////////////////////////////////////
-    template <typename T>
-    static String fromUtf16(T begin, T end);
+    template <typename V>
+    static String fromUtf16(V begin, V end);
 
     ////////////////////////////////////////////////////////////
     /// \brief Create a new sf::String from a UTF-32 encoded string
@@ -200,8 +200,8 @@ public:
     /// \see fromUtf8, fromUtf16
     ///
     ////////////////////////////////////////////////////////////
-    template <typename T>
-    static String fromUtf32(T begin, T end);
+    template <typename V>
+    static String fromUtf32(V begin, V end);
 
     ////////////////////////////////////////////////////////////
     /// \brief Implicit conversion operator to std::string (ANSI string)

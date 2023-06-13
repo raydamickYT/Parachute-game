@@ -53,7 +53,7 @@ public:
     /// \brief Structure defining a time range using the template type
     ///
     ////////////////////////////////////////////////////////////
-    template <typename T>
+    template <typename V>
     struct Span
     {
         ////////////////////////////////////////////////////////////
@@ -72,15 +72,15 @@ public:
         /// \param len Initial Length
         ///
         ////////////////////////////////////////////////////////////
-        Span(T off, T len):
+        Span(V off, V len):
         offset(off),
         length(len)
         {
 
         }
 
-        T offset; ///< The beginning offset of the time range
-        T length; ///< The length of the time range
+        V offset; ///< The beginning offset of the time range
+        V length; ///< The length of the time range
     };
 
     // Define the relevant Span types

@@ -33,7 +33,7 @@ namespace sf
 ///        3-dimensional vectors
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 class Vector3
 {
 public:
@@ -54,7 +54,7 @@ public:
     /// \param Z Z coordinate
     ///
     ////////////////////////////////////////////////////////////
-    Vector3(T X, T Y, T Z);
+    Vector3(V X, V Y, V Z);
 
     ////////////////////////////////////////////////////////////
     /// \brief Construct the vector from another type of vector
@@ -73,9 +73,9 @@ public:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    T x; ///< X coordinate of the vector
-    T y; ///< Y coordinate of the vector
-    T z; ///< Z coordinate of the vector
+    V x; ///< X coordinate of the vector
+    V y; ///< Y coordinate of the vector
+    V z; ///< Z coordinate of the vector
 };
 
 ////////////////////////////////////////////////////////////
@@ -87,8 +87,8 @@ public:
 /// \return Memberwise opposite of the vector
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator -(const Vector3<T>& left);
+template <typename V>
+Vector3<V> operator -(const Vector3<V>& left);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -103,8 +103,8 @@ Vector3<T> operator -(const Vector3<T>& left);
 /// \return Reference to \a left
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T>& operator +=(Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+Vector3<V>& operator +=(Vector3<V>& left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -119,8 +119,8 @@ Vector3<T>& operator +=(Vector3<T>& left, const Vector3<T>& right);
 /// \return Reference to \a left
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T>& operator -=(Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+Vector3<V>& operator -=(Vector3<V>& left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -132,8 +132,8 @@ Vector3<T>& operator -=(Vector3<T>& left, const Vector3<T>& right);
 /// \return Memberwise addition of both vectors
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator +(const Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+Vector3<V> operator +(const Vector3<V>& left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -145,8 +145,8 @@ Vector3<T> operator +(const Vector3<T>& left, const Vector3<T>& right);
 /// \return Memberwise subtraction of both vectors
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator -(const Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+Vector3<V> operator -(const Vector3<V>& left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -158,8 +158,8 @@ Vector3<T> operator -(const Vector3<T>& left, const Vector3<T>& right);
 /// \return Memberwise multiplication by \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator *(const Vector3<T>& left, T right);
+template <typename V>
+Vector3<V> operator *(const Vector3<V>& left, V right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -171,8 +171,8 @@ Vector3<T> operator *(const Vector3<T>& left, T right);
 /// \return Memberwise multiplication by \a left
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator *(T left, const Vector3<T>& right);
+template <typename V>
+Vector3<V> operator *(V left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -187,8 +187,8 @@ Vector3<T> operator *(T left, const Vector3<T>& right);
 /// \return Reference to \a left
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T>& operator *=(Vector3<T>& left, T right);
+template <typename V>
+Vector3<V>& operator *=(Vector3<V>& left, V right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -200,8 +200,8 @@ Vector3<T>& operator *=(Vector3<T>& left, T right);
 /// \return Memberwise division by \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T> operator /(const Vector3<T>& left, T right);
+template <typename V>
+Vector3<V> operator /(const Vector3<V>& left, V right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -216,8 +216,8 @@ Vector3<T> operator /(const Vector3<T>& left, T right);
 /// \return Reference to \a left
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-Vector3<T>& operator /=(Vector3<T>& left, T right);
+template <typename V>
+Vector3<V>& operator /=(Vector3<V>& left, V right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -231,8 +231,8 @@ Vector3<T>& operator /=(Vector3<T>& left, T right);
 /// \return True if \a left is equal to \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-bool operator ==(const Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+bool operator ==(const Vector3<V>& left, const Vector3<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Vector3
@@ -246,8 +246,8 @@ bool operator ==(const Vector3<T>& left, const Vector3<T>& right);
 /// \return True if \a left is not equal to \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-bool operator !=(const Vector3<T>& left, const Vector3<T>& right);
+template <typename V>
+bool operator !=(const Vector3<V>& left, const Vector3<V>& right);
 
 #include <SFML/System/Vector3.inl>
 

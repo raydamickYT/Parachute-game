@@ -24,8 +24,8 @@
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>::Vector3() :
+template <typename V>
+inline Vector3<V>::Vector3() :
 x(0),
 y(0),
 z(0)
@@ -35,8 +35,8 @@ z(0)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>::Vector3(T X, T Y, T Z) :
+template <typename V>
+inline Vector3<V>::Vector3(V X, V Y, V Z) :
 x(X),
 y(Y),
 z(Z)
@@ -46,27 +46,27 @@ z(Z)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 template <typename U>
-inline Vector3<T>::Vector3(const Vector3<U>& vector) :
-x(static_cast<T>(vector.x)),
-y(static_cast<T>(vector.y)),
-z(static_cast<T>(vector.z))
+inline Vector3<V>::Vector3(const Vector3<U>& vector) :
+x(static_cast<V>(vector.x)),
+y(static_cast<V>(vector.y)),
+z(static_cast<V>(vector.z))
 {
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator -(const Vector3<T>& left)
+template <typename V>
+inline Vector3<V> operator -(const Vector3<V>& left)
 {
-    return Vector3<T>(-left.x, -left.y, -left.z);
+    return Vector3<V>(-left.x, -left.y, -left.z);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>& operator +=(Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline Vector3<V>& operator +=(Vector3<V>& left, const Vector3<V>& right)
 {
     left.x += right.x;
     left.y += right.y;
@@ -77,8 +77,8 @@ inline Vector3<T>& operator +=(Vector3<T>& left, const Vector3<T>& right)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>& operator -=(Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline Vector3<V>& operator -=(Vector3<V>& left, const Vector3<V>& right)
 {
     left.x -= right.x;
     left.y -= right.y;
@@ -89,40 +89,40 @@ inline Vector3<T>& operator -=(Vector3<T>& left, const Vector3<T>& right)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator +(const Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline Vector3<V> operator +(const Vector3<V>& left, const Vector3<V>& right)
 {
-    return Vector3<T>(left.x + right.x, left.y + right.y, left.z + right.z);
+    return Vector3<V>(left.x + right.x, left.y + right.y, left.z + right.z);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator -(const Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline Vector3<V> operator -(const Vector3<V>& left, const Vector3<V>& right)
 {
-    return Vector3<T>(left.x - right.x, left.y - right.y, left.z - right.z);
+    return Vector3<V>(left.x - right.x, left.y - right.y, left.z - right.z);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator *(const Vector3<T>& left, T right)
+template <typename V>
+inline Vector3<V> operator *(const Vector3<V>& left, V right)
 {
-    return Vector3<T>(left.x * right, left.y * right, left.z * right);
+    return Vector3<V>(left.x * right, left.y * right, left.z * right);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator *(T left, const Vector3<T>& right)
+template <typename V>
+inline Vector3<V> operator *(V left, const Vector3<V>& right)
 {
-    return Vector3<T>(right.x * left, right.y * left, right.z * left);
+    return Vector3<V>(right.x * left, right.y * left, right.z * left);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>& operator *=(Vector3<T>& left, T right)
+template <typename V>
+inline Vector3<V>& operator *=(Vector3<V>& left, V right)
 {
     left.x *= right;
     left.y *= right;
@@ -133,16 +133,16 @@ inline Vector3<T>& operator *=(Vector3<T>& left, T right)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T> operator /(const Vector3<T>& left, T right)
+template <typename V>
+inline Vector3<V> operator /(const Vector3<V>& left, V right)
 {
-    return Vector3<T>(left.x / right, left.y / right, left.z / right);
+    return Vector3<V>(left.x / right, left.y / right, left.z / right);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline Vector3<T>& operator /=(Vector3<T>& left, T right)
+template <typename V>
+inline Vector3<V>& operator /=(Vector3<V>& left, V right)
 {
     left.x /= right;
     left.y /= right;
@@ -153,16 +153,16 @@ inline Vector3<T>& operator /=(Vector3<T>& left, T right)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline bool operator ==(const Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline bool operator ==(const Vector3<V>& left, const Vector3<V>& right)
 {
     return (left.x == right.x) && (left.y == right.y) && (left.z == right.z);
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-inline bool operator !=(const Vector3<T>& left, const Vector3<T>& right)
+template <typename V>
+inline bool operator !=(const Vector3<V>& left, const Vector3<V>& right)
 {
     return (left.x != right.x) || (left.y != right.y) || (left.z != right.z);
 }

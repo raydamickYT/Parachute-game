@@ -31,12 +31,12 @@ namespace sf
 {
 namespace priv
 {
-    template <typename T> SoundFileReader* createReader() {return new T;}
-    template <typename T> SoundFileWriter* createWriter() {return new T;}
+    template <typename V> SoundFileReader* createReader() {return new V;}
+    template <typename V> SoundFileWriter* createWriter() {return new V;}
 }
 
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 void SoundFileFactory::registerReader()
 {
     // Make sure the same class won't be registered twice
@@ -53,7 +53,7 @@ void SoundFileFactory::registerReader()
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 void SoundFileFactory::unregisterReader()
 {
     // Remove the instance(s) of the reader from the array of factories
@@ -67,7 +67,7 @@ void SoundFileFactory::unregisterReader()
 }
 
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 void SoundFileFactory::registerWriter()
 {
     // Make sure the same class won't be registered twice
@@ -84,7 +84,7 @@ void SoundFileFactory::registerWriter()
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 void SoundFileFactory::unregisterWriter()
 {
     // Remove the instance(s) of the writer from the array of factories

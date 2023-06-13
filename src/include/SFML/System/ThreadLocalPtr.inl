@@ -26,40 +26,40 @@
 namespace sf
 {
 ////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>::ThreadLocalPtr(T* value) :
+template <typename V>
+ThreadLocalPtr<V>::ThreadLocalPtr(V* value) :
 ThreadLocal(value)
 {
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-T& ThreadLocalPtr<T>::operator *() const
+template <typename V>
+V& ThreadLocalPtr<V>::operator *() const
 {
-    return *static_cast<T*>(getValue());
+    return *static_cast<V*>(getValue());
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-T* ThreadLocalPtr<T>::operator ->() const
+template <typename V>
+V* ThreadLocalPtr<V>::operator ->() const
 {
-    return static_cast<T*>(getValue());
+    return static_cast<V*>(getValue());
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>::operator T*() const
+template <typename V>
+ThreadLocalPtr<V>::operator V*() const
 {
-    return static_cast<T*>(getValue());
+    return static_cast<V*>(getValue());
 }
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>& ThreadLocalPtr<T>::operator =(T* value)
+template <typename V>
+ThreadLocalPtr<V>& ThreadLocalPtr<V>::operator =(V* value)
 {
     setValue(value);
     return *this;
@@ -67,8 +67,8 @@ ThreadLocalPtr<T>& ThreadLocalPtr<T>::operator =(T* value)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-ThreadLocalPtr<T>& ThreadLocalPtr<T>::operator =(const ThreadLocalPtr<T>& right)
+template <typename V>
+ThreadLocalPtr<V>& ThreadLocalPtr<V>::operator =(const ThreadLocalPtr<V>& right)
 {
     setValue(right.getValue());
     return *this;

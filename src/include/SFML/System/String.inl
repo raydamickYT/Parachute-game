@@ -24,8 +24,8 @@
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-String String::fromUtf8(T begin, T end)
+template <typename V>
+String String::fromUtf8(V begin, V end)
 {
     String string;
     Utf8::toUtf32(begin, end, std::back_inserter(string.m_string));
@@ -34,8 +34,8 @@ String String::fromUtf8(T begin, T end)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-String String::fromUtf16(T begin, T end)
+template <typename V>
+String String::fromUtf16(V begin, V end)
 {
     String string;
     Utf16::toUtf32(begin, end, std::back_inserter(string.m_string));
@@ -44,8 +44,8 @@ String String::fromUtf16(T begin, T end)
 
 
 ////////////////////////////////////////////////////////////
-template <typename T>
-String String::fromUtf32(T begin, T end)
+template <typename V>
+String String::fromUtf32(V begin, V end)
 {
     String string;
     string.m_string.assign(begin, end);

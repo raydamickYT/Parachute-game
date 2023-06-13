@@ -32,12 +32,12 @@ struct ThreadFunc
 };
 
 // Specialization using a functor (including free functions) with no argument
-template <typename T>
+template <typename V>
 struct ThreadFunctor : ThreadFunc
 {
-    ThreadFunctor(T functor) : m_functor(functor) {}
+    ThreadFunctor(V functor) : m_functor(functor) {}
     virtual void run() {m_functor();}
-    T m_functor;
+    V m_functor;
 };
 
 // Specialization using a functor (including free functions) with one argument

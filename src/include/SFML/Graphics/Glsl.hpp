@@ -42,7 +42,7 @@ namespace priv
     template <std::size_t Columns, std::size_t Rows>
     struct Matrix;
 
-    template <typename T>
+    template <typename V>
     struct Vector4;
 
 #include <SFML/Graphics/Glsl.inl>

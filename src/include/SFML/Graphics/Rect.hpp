@@ -38,7 +38,7 @@ namespace sf
 /// \brief Utility class for manipulating 2D axis aligned rectangles
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
+template <typename V>
 class Rect
 {
 public:
@@ -64,7 +64,7 @@ public:
     /// \param rectHeight Height of the rectangle
     ///
     ////////////////////////////////////////////////////////////
-    Rect(T rectLeft, T rectTop, T rectWidth, T rectHeight);
+    Rect(V rectLeft, V rectTop, V rectWidth, V rectHeight);
 
     ////////////////////////////////////////////////////////////
     /// \brief Construct the rectangle from position and size
@@ -76,7 +76,7 @@ public:
     /// \param size     Size of the rectangle
     ///
     ////////////////////////////////////////////////////////////
-    Rect(const Vector2<T>& position, const Vector2<T>& size);
+    Rect(const Vector2<V>& position, const Vector2<V>& size);
 
     ////////////////////////////////////////////////////////////
     /// \brief Construct the rectangle from another type of rectangle
@@ -106,7 +106,7 @@ public:
     /// \see intersects
     ///
     ////////////////////////////////////////////////////////////
-    bool contains(T x, T y) const;
+    bool contains(V x, V y) const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Check if a point is inside the rectangle's area
@@ -121,7 +121,7 @@ public:
     /// \see intersects
     ///
     ////////////////////////////////////////////////////////////
-    bool contains(const Vector2<T>& point) const;
+    bool contains(const Vector2<V>& point) const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Check the intersection between two rectangles
@@ -133,7 +133,7 @@ public:
     /// \see contains
     ///
     ////////////////////////////////////////////////////////////
-    bool intersects(const Rect<T>& rectangle) const;
+    bool intersects(const Rect<V>& rectangle) const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Check the intersection between two rectangles
@@ -149,15 +149,15 @@ public:
     /// \see contains
     ///
     ////////////////////////////////////////////////////////////
-    bool intersects(const Rect<T>& rectangle, Rect<T>& intersection) const;
+    bool intersects(const Rect<V>& rectangle, Rect<V>& intersection) const;
 
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    T left;   ///< Left coordinate of the rectangle
-    T top;    ///< Top coordinate of the rectangle
-    T width;  ///< Width of the rectangle
-    T height; ///< Height of the rectangle
+    V left;   ///< Left coordinate of the rectangle
+    V top;    ///< Top coordinate of the rectangle
+    V width;  ///< Width of the rectangle
+    V height; ///< Height of the rectangle
 };
 
 ////////////////////////////////////////////////////////////
@@ -172,8 +172,8 @@ public:
 /// \return True if \a left is equal to \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-bool operator ==(const Rect<T>& left, const Rect<T>& right);
+template <typename V>
+bool operator ==(const Rect<V>& left, const Rect<V>& right);
 
 ////////////////////////////////////////////////////////////
 /// \relates Rect
@@ -187,8 +187,8 @@ bool operator ==(const Rect<T>& left, const Rect<T>& right);
 /// \return True if \a left is not equal to \a right
 ///
 ////////////////////////////////////////////////////////////
-template <typename T>
-bool operator !=(const Rect<T>& left, const Rect<T>& right);
+template <typename V>
+bool operator !=(const Rect<V>& left, const Rect<V>& right);
 
 #include <SFML/Graphics/Rect.inl>
 
