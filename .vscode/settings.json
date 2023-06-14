@@ -43,6 +43,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "xlocnum": "cpp"
+        "xlocnum": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "cinttypes": "cpp"
     }
 }
