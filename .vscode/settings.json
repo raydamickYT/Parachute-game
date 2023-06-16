@@ -46,6 +46,6 @@
         "xlocnum": "cpp",
         "chrono": "cpp",
         "ratio": "cpp",
-        "cinttypes": "cpp"
+        "set": "cpp"
     }
 }

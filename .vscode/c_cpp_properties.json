@@ -1,10 +1,11 @@
 {
     "configurations": [
         {
-            "name": "Win64",
+            "name": "Win32",
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/src/include",
                 "${workspaceFolder}/src/include"
             ],
             "defines": [
@@ -15,33 +16,8 @@
             "windowsSdkVersion": "10.0.22000.0",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-clang-x86",
-            "configurationProvider": "ms-vscode.makefile-tools",
-            "compilerPath": "C:/MinGW/bin/g++.exe"
-        },
-        {
-            "name": "Win32",
-            "includePath": [
-                "c:\\Users\\Adam\\source\\repos\\Parachute game/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.22000.0",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64",
-            "mergeConfigurations": false,
-            "compilerPath": "C:/MinGW/bin/g++.exe",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/**"
-                ],
-                "limitSymbolsToIncludedHeaders": true
-            },
-            "compilerPathInCppPropertiesJson": "C:/MinGW/bin/g++.exe"
+            "intelliSenseMode": "windows-msvc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
