@@ -23,10 +23,10 @@ void ParachuteGame::Run()
         sf::Time deltaTime = clock.restart();
         float dtSeconds = deltaTime.asSeconds();
 
-        ProcessInput();
         Update(dtSeconds);
         CheckEnemiesAtBottom();
         Render();
+        ProcessInput();
     }
 } 
 
@@ -117,20 +117,24 @@ void ParachuteGame::Update(float deltaTime)
 // script for the player input
 void ParachuteGame::ProcessInput()
 {
+    
     // there was an attempt to make the player speed up and slow down, but due to it's jittery movement it's not really noticable.
-    const float acceleration = 30.0f;
+
+
+    const float acceleration = 2.0f;
     const float deceleration = 5.0f;
 
     sf::Event event;
-    while (window.pollEvent(event))
-    {
+    //while (window.pollEvent(event))
+    //{
+        //std::cout << "window open" << std::endl;
         // close window
         if (event.type == sf::Event::Closed)
         {
             window.close();
         }
-        else if (event.type == sf::Event::KeyPressed)
-        {
+        //else if (event.type == sf::Event::KeyPressed)
+        //{
             // movement Left. I used A and D aswell in this case since my keyboard doesn't have arrow keys
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
@@ -160,7 +164,7 @@ void ParachuteGame::ProcessInput()
                     }
                 }
             }
-        }
+        //}
         // make sure the player is within the set screen bounds.
         const float playerWidth = player.getGlobalBounds().width;
         const float screenWidth = window.getSize().x;
@@ -175,7 +179,7 @@ void ParachuteGame::ProcessInput()
         {
             playerPosition.x = screenWidth - playerWidth;
         }
-    }
+    //}
 }
 
 // function that is called when I want the game to spawn enemies.
