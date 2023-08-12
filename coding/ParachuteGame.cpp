@@ -26,7 +26,7 @@ void ParachuteGame::Run()
         Update(dtSeconds);
         CheckEnemiesAtBottom();
         Render();
-        ProcessInput();
+        ProcessInput(dtSeconds);
     }
 } 
 
@@ -115,72 +115,66 @@ void ParachuteGame::Update(float deltaTime)
 }
 
 // script for the player input
-void ParachuteGame::ProcessInput()
+void ParachuteGame::ProcessInput(float dt) 
 {
-    
-    // there was an attempt to make the player speed up and slow down, but due to it's jittery movement it's not really noticable.
-
-
-    const float acceleration = 2.0f;
-    const float deceleration = 5.0f;
+    const float accelerationAmount = 2000.0f;
+    const float decelerationAmount = 2500.0f;
 
     sf::Event event;
-    //while (window.pollEvent(event))
-    //{
-        //std::cout << "window open" << std::endl;
-        // close window
+    while (window.pollEvent(event))
+    {
         if (event.type == sf::Event::Closed)
         {
             window.close();
         }
-        //else if (event.type == sf::Event::KeyPressed)
-        //{
-            // movement Left. I used A and D aswell in this case since my keyboard doesn't have arrow keys
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            {
-                playerPosition.x -= acceleration;
-            }
-            // movement Right.
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            {
-                playerPosition.x += acceleration;
-            }
-            else
-            {
-                if (playerVelocity.x > 0)
-                {
-                    playerVelocity.x -= deceleration;
-                    if (playerVelocity.x < 0)
-                    {
-                        playerVelocity.x = 0;
-                    }
-                }
-                else if (playerVelocity.x < 0)
-                {
-                    playerVelocity.x += deceleration;
-                    if (playerVelocity.x > 0)
-                    {
-                        playerVelocity.x = 0;
-                    }
-                }
-            }
-        //}
-        // make sure the player is within the set screen bounds.
-        const float playerWidth = player.getGlobalBounds().width;
-        const float screenWidth = window.getSize().x;
-        // check if the player is at the left side of the sceen
-        if (playerPosition.x < 0.0f)
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        playerAcceleration.x = -accelerationAmount; // Accelerate to the left
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        playerAcceleration.x = accelerationAmount; // Accelerate to the right
+    }
+    else
+    {
+        //decelerate the player when no keys are pressed
+        if (playerVelocity.x > 0)
         {
-            // if so, set the player position to 0 (it wont move further the left because of this)
-            playerPosition.x = 0.0f;
+            playerAcceleration.x = -decelerationAmount;
         }
-        // do the same thing but this time on the other side of the screen.
-        else if (playerPosition.x > screenWidth - playerWidth)
+        else if (playerVelocity.x < 0)
         {
-            playerPosition.x = screenWidth - playerWidth;
+            playerAcceleration.x = decelerationAmount;
         }
-    //}
+        else
+        {
+            playerAcceleration.x = 0;
+        }
+    }
+
+    // Update velocity and position based on acceleration and velocity.
+    //delta time is important here, since we dont want different results on different framerates
+    playerVelocity.x += playerAcceleration.x * dt;
+    playerPosition.x += playerVelocity.x * dt;
+
+    // check if the player has hit the edges of the playing field
+    const float playerWidth = player.getGlobalBounds().width;
+    const float screenWidth = window.getSize().x;
+    if (playerPosition.x < 0.0f)
+    {
+        playerPosition.x = 0.0f;
+        playerVelocity.x = 0; // stop the player if it hits the left edge
+    }
+    else if (playerPosition.x > screenWidth - playerWidth)
+    {
+        playerPosition.x = screenWidth - playerWidth;
+        playerVelocity.x = 0; // stop the player if it hits the right edge
+    }
 }
+
+
 
 // function that is called when I want the game to spawn enemies.
 void ParachuteGame::SpawnEnemies(int numEnemies)
@@ -229,19 +223,31 @@ void ParachuteGame::SpawnEnemies(int numEnemies)
 // this function will update the enemy position.
 void ParachuteGame::UpdateEnemies(float deltaTime)
 {
-    // first it goes through the enemy list
+    const float gravity = 9.8f * 50;
+    const float swayAcceleration = 5.0f; // This determines how quickly the enemy will change direction
+    const float maxSwayVelocity = 50.0f; // This is the maximum speed at which the enemy can sway left or right
+
     for (size_t i = 0; i < enemies.size(); ++i)
     {
-        // then it calculates a custom velocity for falling down
-        const float gravity = 9.8f * 50;
+        // Update the vertical velocity and position
         enemyVelocities[i].y += gravity * deltaTime;
-        enemyPositions[i] = enemyPositions[i] + enemyVelocities[i] * deltaTime;
+        enemyPositions[i].y += enemyVelocities[i].y * deltaTime;
 
+        // Implement the swaying effect using sinusoidal acceleration for horizontal movement
+        enemyVelocities[i].x += swayAcceleration * sin(enemyPositions[i].y / 100.0f) * deltaTime;
+
+        // Clamp the horizontal velocity to ensure it doesn't exceed maxSwayVelocity
+        if (enemyVelocities[i].x > maxSwayVelocity)
+            enemyVelocities[i].x = maxSwayVelocity;
+        else if (enemyVelocities[i].x < -maxSwayVelocity)
+            enemyVelocities[i].x = -maxSwayVelocity;
+
+        enemyPositions[i].x += enemyVelocities[i].x * deltaTime;
 
         enemies[i].setPosition(enemyPositions[i].x, enemyPositions[i].y);
-
     }
 }
+
 
 // this function handles all the rendering.
 void ParachuteGame::CheckEnemiesAtBottom()

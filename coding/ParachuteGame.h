@@ -16,7 +16,7 @@ private:
     //setup for all the functions used in this script
     void Render();
     void Initialize();
-    void ProcessInput();
+    void ProcessInput(float dt);
     void CheckEnemiesAtBottom();
     void Update(float deltaTime);
     void SpawnEnemies(int numEnemies);
@@ -35,6 +35,7 @@ private:
     sf::Texture playerTexture;
     sf::Sprite player;
     Vector2f playerPosition;
+    Vector2f playerAcceleration;
     Vector2f playerVelocity;
 
     sf::Texture BackgroundTexture;
@@ -45,6 +46,7 @@ private:
     sf::Texture EnemyTexture;
     std::vector<sf::Sprite> enemies;
     std::vector<Vector2f> enemyPositions;
+    std::vector<Vector2f> enemySwayAccelerations;
     std::vector<Vector2f> enemyVelocities;
 };
 
