@@ -29,7 +29,10 @@ void Enemy::SpawnEnemies(float enemiesSpawnedEachRound)
         enemy.setScale(1.5f, 1.5f);
 
         // Generate random position within the screen bounds
-        float xPos = rand() % 700;
+        //reason why this is hardcoded right now is because the screen size is aswell. If I were to ever make this into a program with a variable screen size
+        //I'd defintely use the actual window size to calc this.
+        float xPos = 100 + rand() % 400;
+        std::cout << xPos << std::endl;
         float yPos = -100;
 
         enemy.setPosition(xPos, yPos);
@@ -59,12 +62,12 @@ void Enemy::Update(float deltaTime)
     }
 
     // this changes how fast the enemies fall to the ground. Higher is faster
-    const float gravity = 9.8f * 30;
+    const float gravity = 9.8f * 10;
 
     // how far the enemy sways from left to right
     const float swayAmount = 1.0f;
     // how often the enemy sways from left to right
-    const float swayFrequency = 6.0f;
+    const float swayFrequency = 4.0f;
 
     // Stores accumulated time
     static float timeAccumulator = 0.0f;
