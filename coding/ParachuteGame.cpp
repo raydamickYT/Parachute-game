@@ -6,8 +6,8 @@
 
 // this will initialise the game window with the name that is between the brackets.
 ParachuteGame::ParachuteGame()
-    : window(sf::VideoMode(800, 600), "Game & Watch Parachute"),
-      playerPosition(Vector2f(100.0f, 400.0f))
+    : window(sf::VideoMode(800, 600), "Game & Watch Parachute")
+// playerPosition(Vector2f(100.0f, 400.0f))
 {
 }
 
@@ -24,21 +24,19 @@ void ParachuteGame::Run()
         float dtSeconds = deltaTime.asSeconds();
 
         Update(dtSeconds);
-        CheckEnemiesAtBottom();
+        enemyClass.CheckEnemiesAtBottom(window);
         Render();
-        ProcessInput(dtSeconds);
+
+        playerClass.PlayerInput(dtSeconds, window);
     }
-} 
+}
 
 // this is sort of like the start function in unity. it's only called at the start of the game
 void ParachuteGame::Initialize()
 {
-    SpawnEnemies(enemiesSpawnedEachRound);
-    // laad assets, set up game objects, etc.
-    if (!playerTexture.loadFromFile("images/Player2.png"))
-    {
-        std::cout << "could not load the Playerimage" << std::endl;
-    }
+
+    // SpawnEnemies(enemiesSpawnedEachRound);
+    enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
     if (!BackgroundTexture.loadFromFile("images/Background.png"))
     {
         std::cout << "could not load the backgroundimage" << std::endl;
@@ -47,14 +45,6 @@ void ParachuteGame::Initialize()
     {
         std::cout << "could not load the backgroundimage" << std::endl;
     }
-
-    // setting up the player sprite so it displays properly
-    player.setTexture(playerTexture);
-
-    // setting up the player position to be in the middle (ish) and the scale to be reasonable
-    playerPosition = Vector2f(100, 400);
-    player.setPosition(playerPosition.x, playerPosition.y);
-    player.setScale(1.5, 1.5);
 
     Background.setTexture(BackgroundTexture);
     Background.setScale(window.getSize().x / BackgroundTexture.getSize().x + .15f, window.getSize().y / BackgroundTexture.getSize().y + .15f);
@@ -67,45 +57,25 @@ void ParachuteGame::Initialize()
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
 void ParachuteGame::Update(float deltaTime)
 {
-    if (enemiesMissedScore >= 3)
+    playerClass.Update(deltaTime);
+
+    if (enemyClass.enemiesMissedScore >= 3)
     {
-        gameEnded = true;
+        enemyClass.gameEnded = true;
     }
     // Calculate frame time
     sf::Clock clock;
     sf::Time frameTime = clock.restart();
     float frameSeconds = frameTime.asSeconds();
     // Update the enemies position.
-    UpdateEnemies(deltaTime);
-
-    // update the player position based on the the frametimes. I used this because I tried to make the player movement a lot smoother, for some reason its not working.
-    // I gave up on it since it's not a huge bother and the game works fine without the smooth movement.
-    playerPosition += playerVelocity * frameSeconds;
-    player.setPosition(playerPosition.x, playerPosition.y);
-
-    // check if the player and enemy are colliding. if true, the enemy will be removed from both the list and the screen.
-    //  you can add further logic after that (like score, end game)
-    for (size_t i = 0; i < enemies.size(); ++i)
-    {
-        sf::Sprite &enemy = enemies[i];
-        Vector2f enemyPosition(enemy.getPosition().x, enemy.getPosition().y);
-
-        if (Physics::circleCol(playerRadius, playerPosition, enemyRadius, enemyPosition))
-        {
-            // Collision occurred, handle accordingly
-            enemies.erase(enemies.begin() + i);
-            enemyPositions.erase(enemyPositions.begin() + i);
-            enemyVelocities.erase(enemyVelocities.begin() + i);
-            score += 1;
-            // ...
-        }
-    }
+    enemyClass.Update(deltaTime);
+    enemyClass.EnemyCollision(playerClass.playerPosition);
 
     // Update enemy positions
-    if (enemies.size() == 0 && !gameEnded)
+    if (enemyClass.enemies.size() == 0 && !enemyClass.gameEnded)
     {
         // std::cout << enemiesSpawned << std::endl;
-        SpawnEnemies(enemiesSpawnedEachRound);
+        enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
         enemiesSpawned = true;
     }
     else
@@ -113,141 +83,6 @@ void ParachuteGame::Update(float deltaTime)
         enemiesSpawned = false;
     }
 }
-
-// script for the player input
-void ParachuteGame::ProcessInput(float dt) 
-{
-    const float accelerationAmount = 2000.0f;
-    const float decelerationAmount = 2500.0f;
-
-    sf::Event event;
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
-            window.close();
-        }
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        playerAcceleration.x = -accelerationAmount; // Accelerate to the left
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        playerAcceleration.x = accelerationAmount; // Accelerate to the right
-    }
-    else
-    {
-        //decelerate the player when no keys are pressed
-        if (playerVelocity.x > 0)
-        {
-            playerAcceleration.x = -decelerationAmount;
-        }
-        else if (playerVelocity.x < 0)
-        {
-            playerAcceleration.x = decelerationAmount;
-        }
-        else
-        {
-            playerAcceleration.x = 0;
-        }
-    }
-
-    // Update velocity and position based on acceleration and velocity.
-    //delta time is important here, since we dont want different results on different framerates
-    playerVelocity.x += playerAcceleration.x * dt;
-    playerPosition.x += playerVelocity.x * dt;
-
-    // check if the player has hit the edges of the playing field
-    const float playerWidth = player.getGlobalBounds().width;
-    const float screenWidth = window.getSize().x;
-    if (playerPosition.x < 0.0f)
-    {
-        playerPosition.x = 0.0f;
-        playerVelocity.x = 0; // stop the player if it hits the left edge
-    }
-    else if (playerPosition.x > screenWidth - playerWidth)
-    {
-        playerPosition.x = screenWidth - playerWidth;
-        playerVelocity.x = 0; // stop the player if it hits the right edge
-    }
-}
-
-
-
-// function that is called when I want the game to spawn enemies.
-void ParachuteGame::SpawnEnemies(int numEnemies)
-{
-    // because I want the enemies only to spawn when the last one is gone,
-    // I made a bool that is false when there are no enemies on the field and is false when there aree enemies on the field
-    enemiesSpawned = true;
-    enemyPositions.clear();
-    enemyVelocities.clear();
-
-    // Spawn enemies
-    for (int i = 0; i < numEnemies; ++i)
-    {
-        sf::Sprite enemy;
-        if (!EnemyTexture.loadFromFile("images/Enemy.png"))
-        {
-            std::cout << "Could not load the enemy texture" << std::endl;
-        }
-
-        enemy.setTexture(EnemyTexture);
-        enemy.setScale(1.5f, 1.5f);
-
-        // Generate random position within the screen bounds
-        float xPos = rand() % 700;
-        float yPos = -100;
-
-        enemy.setPosition(xPos, yPos);
-
-        // Random X/Y velocity between -50 and 49
-        //static_cast<> is used to convert a certain value to a different type. in this case a float
-        //std::rand() generates a random value between 0-1. by adding % 100 we make that value into a value between 0-99.
-        //finally by subtracting 50 we get a value between -50 and 49
-        float initialVelX = static_cast<float>(std::rand() % 100 - 50);
-        float initialVelY = static_cast<float>(std::rand() % 100 - 50);
-
-        // add them to a list to check if they're all dead later
-        //  this is where I got stuck.
-        // fix: the enemypositions and velocity lists weren't cleared, so every time it went to update all enemies in the list
-        // it had to run through 70 or more enemies, causing the enemies not to spawn. Make sure to empty these two out at the start of the function.
-        enemies.push_back(enemy);
-        enemyPositions.push_back(Vector2f(xPos, yPos));
-        enemyVelocities.push_back(Vector2f(initialVelX, initialVelY));
-    }
-}
-
-// this function will update the enemy position.
-void ParachuteGame::UpdateEnemies(float deltaTime)
-{
-    const float gravity = 9.8f * 50;
-    const float swayAcceleration = 5.0f; // This determines how quickly the enemy will change direction
-    const float maxSwayVelocity = 50.0f; // This is the maximum speed at which the enemy can sway left or right
-
-    for (size_t i = 0; i < enemies.size(); ++i)
-    {
-        // Update the vertical velocity and position
-        enemyVelocities[i].y += gravity * deltaTime;
-        enemyPositions[i].y += enemyVelocities[i].y * deltaTime;
-
-        // Implement the swaying effect using sinusoidal acceleration for horizontal movement
-        enemyVelocities[i].x += swayAcceleration * sin(enemyPositions[i].y / 100.0f) * deltaTime;
-
-        // Clamp the horizontal velocity to ensure it doesn't exceed maxSwayVelocity
-        if (enemyVelocities[i].x > maxSwayVelocity)
-            enemyVelocities[i].x = maxSwayVelocity;
-        else if (enemyVelocities[i].x < -maxSwayVelocity)
-            enemyVelocities[i].x = -maxSwayVelocity;
-
-        enemyPositions[i].x += enemyVelocities[i].x * deltaTime;
-
-        enemies[i].setPosition(enemyPositions[i].x, enemyPositions[i].y);
-    }
-}
-
 
 // this function handles all the rendering.
 void ParachuteGame::CheckEnemiesAtBottom()
@@ -259,7 +94,7 @@ void ParachuteGame::CheckEnemiesAtBottom()
     // this makes it slightly more flexible and easy to handle. This only works with initialized variables.
     //  this for loop works by initialising the var it, then it sets the condition which is if "it" has reached the end of the list.
     //  it'll keep looping till the condition is met.
-    for (auto it = enemies.begin(); it != enemies.end();)
+    for (auto it = enemyClass.enemies.begin(); it != enemyClass.enemies.end();)
     {
         sf::Sprite &enemy = *it;
         // I made a float that gives me the position of the bottom of my enemy, I also subtracted 100 because I thought it looked ugly if they instantly disappear and reappear.
@@ -267,8 +102,8 @@ void ParachuteGame::CheckEnemiesAtBottom()
 
         if (enemyBottom >= screenHeight)
         {
-            it = enemies.erase(it);
-            enemiesMissedScore += 1;
+            it = enemyClass.enemies.erase(it);
+            enemyClass.enemiesMissedScore += 1;
         }
         else
         {
@@ -282,11 +117,10 @@ void ParachuteGame::CheckEnemiesAtBottom()
 void ParachuteGame::Render()
 {
     window.clear();
-
-    if (!gameEnded)
+    if (!enemyClass.gameEnded)
     {
         window.draw(Background);
-        window.draw(player);
+        playerClass.Render(window);
     }
     else
     {
@@ -306,14 +140,14 @@ void ParachuteGame::Render()
     // the text size/ color and where we want it to be displayed
     sf::Text scoreText;
     scoreText.setFont(font);
-    scoreText.setString("Score: " + std::to_string(score));
+    scoreText.setString("Score: " + std::to_string(enemyClass.score));
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10, 10);
 
     sf::Text EnemiesMissedScoreText;
     EnemiesMissedScoreText.setFont(font);
-    EnemiesMissedScoreText.setString("Enemies Missed: " + std::to_string(enemiesMissedScore));
+    EnemiesMissedScoreText.setString("Enemies Missed: " + std::to_string(enemyClass.enemiesMissedScore));
     EnemiesMissedScoreText.setCharacterSize(24);
     EnemiesMissedScoreText.setFillColor(sf::Color::Red);
     EnemiesMissedScoreText.setPosition(10, 30);
@@ -321,10 +155,7 @@ void ParachuteGame::Render()
     // const is used here to indicate that the value of var "enemy" can not be adjusted during the loop. it's basically read only
     // for each iteration in the for loop, "enemy" takes the value of the current element in enemies vector.
     // this for loop will keep going through the enemies list until it reaches the end.
-    for (const auto &enemy : enemies)
-    {
-        window.draw(enemy);
-    }
+    enemyClass.Render(window);
 
     window.draw(scoreText);
     window.draw(EnemiesMissedScoreText);
