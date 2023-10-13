@@ -35,6 +35,8 @@ private:
 
     sf::Texture BackgroundTexture;
     sf::Sprite Background;
+    sf::Texture RestartButtonTexture;
+    sf::Sprite RestartButton;
     sf::Texture GameOverScreen;
     sf::Sprite GameOver;
 };

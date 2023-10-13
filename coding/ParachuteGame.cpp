@@ -40,8 +40,6 @@ void ParachuteGame::Run()
 // this is sort of like the start function in unity. it's only called at the start of the game
 void ParachuteGame::Initialize()
 {
-
-    // SpawnEnemies(enemiesSpawnedEachRound);
     enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
     if (!BackgroundTexture.loadFromFile("images/Background.png"))
     {
@@ -51,6 +49,10 @@ void ParachuteGame::Initialize()
     {
         std::cout << "could not load the backgroundimage" << std::endl;
     }
+    if (!RestartButtonTexture.loadFromFile("images/Restart.png"))
+    {
+        std::cout << "could not load the RestartButton image" << std::endl;
+    }
 
     Background.setTexture(BackgroundTexture);
     Background.setScale(window.getSize().x / BackgroundTexture.getSize().x + .15f, window.getSize().y / BackgroundTexture.getSize().y + .15f);
@@ -58,6 +60,10 @@ void ParachuteGame::Initialize()
     GameOver.setTexture(GameOverScreen);
     GameOver.setPosition(window.getSize().x / 15, window.getSize().y / 8);
     GameOver.setScale(window.getSize().x / GameOverScreen.getSize().x + .15f, window.getSize().y / GameOverScreen.getSize().y + .15f);
+
+    RestartButton.setTexture(RestartButtonTexture);
+    RestartButton.setScale(.2, .2);
+    RestartButton.setPosition(window.getSize().x / BackgroundTexture.getSize().x, window.getSize().y- 100);
 }
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
 void ParachuteGame::Update(float deltaTime)
@@ -93,11 +99,22 @@ void ParachuteGame::HandleGameOverInput()
     sf::Event event;
     while (window.pollEvent(event))
     {
-        std::cout << "test" << event.type << std::endl;
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+
+        // Check for button click
+        if (event.type == sf::Event::MouseButtonPressed)
         {
-            RestartGame();
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            if (RestartButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+            {
+                std::cout << "test" << std::endl;
+                RestartGame();
+            }
         }
+    }
+
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+    {
+        RestartGame();
     }
 }
 void ParachuteGame::RestartGame()
@@ -107,7 +124,6 @@ void ParachuteGame::RestartGame()
     // Reset any other game state or variables as needed.
     enemyClass.gameEnded = false;
 }
-
 
 // this is the function that renders all the sprites/texts
 void ParachuteGame::Render()
@@ -120,7 +136,7 @@ void ParachuteGame::Render()
     }
     else
     {
-
+        window.draw(RestartButton);
         window.draw(GameOver);
     }
 

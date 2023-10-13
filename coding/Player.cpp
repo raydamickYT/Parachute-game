@@ -59,7 +59,6 @@ void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
     sf::Event event;
     while (window.pollEvent(event))
     {
-        std::cout << "player input" << std::endl;
         if (event.type == sf::Event::Closed)
         {
             window.close();
