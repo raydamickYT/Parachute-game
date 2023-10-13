@@ -22,10 +22,10 @@ private:
     void Initialize();
     void ProcessInput(float dt);
     void Update(float deltaTime);
+    void HandleGameOverInput();
+    void RestartGame();
     float enemiesSpawnedEachRound = 1;
 
-    float movementSpeed = 10;
-    float enemyRadius = 50;
     bool enemiesSpawned = false;
 
     Player playerClass;

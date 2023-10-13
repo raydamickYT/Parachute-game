@@ -7,7 +7,6 @@
 // this will initialise the game window with the name that is between the brackets.
 ParachuteGame::ParachuteGame()
     : window(sf::VideoMode(800, 600), "Game & Watch Parachute")
-// playerPosition(Vector2f(100.0f, 400.0f))
 {
 }
 
@@ -27,7 +26,14 @@ void ParachuteGame::Run()
         enemyClass.CheckEnemiesAtBottom(window);
         Render();
 
-        playerClass.PlayerInput(dtSeconds, window);
+        if (enemyClass.gameEnded)
+        {
+            HandleGameOverInput();
+        }
+        else
+        {
+            playerClass.PlayerInput(dtSeconds, window);
+        }
     }
 }
 
@@ -53,7 +59,6 @@ void ParachuteGame::Initialize()
     GameOver.setPosition(window.getSize().x / 15, window.getSize().y / 8);
     GameOver.setScale(window.getSize().x / GameOverScreen.getSize().x + .15f, window.getSize().y / GameOverScreen.getSize().y + .15f);
 }
-
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
 void ParachuteGame::Update(float deltaTime)
 {
@@ -83,6 +88,26 @@ void ParachuteGame::Update(float deltaTime)
         enemiesSpawned = false;
     }
 }
+void ParachuteGame::HandleGameOverInput()
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        std::cout << "test" << event.type << std::endl;
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+        {
+            RestartGame();
+        }
+    }
+}
+void ParachuteGame::RestartGame()
+{
+    enemyClass.EnemyReset(enemiesSpawnedEachRound); // Assuming this method resets enemies and their states.
+    playerClass.PlayerReset();                      // Assuming this method resets player state.
+    // Reset any other game state or variables as needed.
+    enemyClass.gameEnded = false;
+}
+
 
 // this is the function that renders all the sprites/texts
 void ParachuteGame::Render()

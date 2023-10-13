@@ -29,8 +29,8 @@ void Enemy::SpawnEnemies(float enemiesSpawnedEachRound)
         enemy.setScale(1.5f, 1.5f);
 
         // Generate random position within the screen bounds
-        //reason why this is hardcoded right now is because the screen size is aswell. If I were to ever make this into a program with a variable screen size
-        //I'd defintely use the actual window size to calc this.
+        // reason why this is hardcoded right now is because the screen size is aswell. If I were to ever make this into a program with a variable screen size
+        // I'd defintely use the actual window size to calc this.
         float xPos = 100 + rand() % 400;
         std::cout << xPos << std::endl;
         float yPos = -100;
@@ -78,7 +78,7 @@ void Enemy::Update(float deltaTime)
     for (size_t i = 0; i < enemies.size(); ++i)
     {
         // Apply forces
-        Vector2f netForce(0, gravityForce);  // start with gravity
+        Vector2f netForce(0, gravityForce); // start with gravity
 
         // Sway force (left and right)
         netForce.x = swayAmount * sin(swayFrequency * timeAccumulator);
@@ -100,7 +100,6 @@ void Enemy::Update(float deltaTime)
         enemies[i].setPosition(enemyPositions[i].x, enemyPositions[i].y);
     }
 }
-
 
 void Enemy::EnemyCollision(Vector2f playerPosition)
 {
@@ -148,6 +147,19 @@ void Enemy::CheckEnemiesAtBottom(sf::RenderWindow &window)
             ++it;
         }
     }
+}
+
+void Enemy::EnemyReset(float enemiesSpawnedEachRound)
+{
+    enemies.clear();
+    enemyVelocities.clear();
+    enemyPositions.clear();
+    score = 0;
+    enemiesMissedScore = 0;
+    gameEnded = false;
+
+    // Spawn initial enemies
+    SpawnEnemies(enemiesSpawnedEachRound);
 }
 
 void Enemy::Render(sf::RenderWindow &window)

@@ -11,16 +11,16 @@ public:
     void Update(float deltaTime);
     void Render(sf::RenderWindow &window);
     void PlayerInput(float deltaTime, sf::RenderWindow &window);
+    void PlayerReset();
     float playerRadius = 20;
     Vector2f playerPosition;
-    // ... Add other necessary methods
+    Vector2f initialPlayerPosition = Vector2f(100, 400);
 
 private:
     sf::Texture playerTexture;
     sf::Sprite player;
     Vector2f playerAcceleration;
     Vector2f playerVelocity;
-    // ... Add other necessary attributes
 };
 
 #endif

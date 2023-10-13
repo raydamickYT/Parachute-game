@@ -17,7 +17,7 @@ Player::Player()
     player.setTexture(playerTexture);
 
     // setting up the player position to be in the middle (ish) and the scale to be reasonable
-    playerPosition = Vector2f(100, 400);
+    playerPosition = initialPlayerPosition;
     player.setPosition(playerPosition.x, playerPosition.y);
     player.setScale(1.5, 1.5);
 }
@@ -39,6 +39,11 @@ void Player::Render(sf::RenderWindow &window)
 {
     window.draw(player);
 }
+void Player::PlayerReset()
+{
+    // reset everything
+    playerPosition = initialPlayerPosition;
+}
 
 void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
 {
@@ -54,6 +59,7 @@ void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
     sf::Event event;
     while (window.pollEvent(event))
     {
+        std::cout << "player input" << std::endl;
         if (event.type == sf::Event::Closed)
         {
             window.close();
