@@ -31,7 +31,7 @@ void Player::Update(float deltaTime)
     // Update logic...
     // update the player position based on the the frametimes. I used this because I tried to make the player movement a lot smoother, for some reason its not working.
     // I gave up on it since it's not a huge bother and the game works fine without the smooth movement.
-    playerPosition += playerVelocity * frameSeconds;
+    playerPosition += playerVelocity * deltaTime;
     player.setPosition(playerPosition.x, playerPosition.y);
 }
 
@@ -43,7 +43,13 @@ void Player::Render(sf::RenderWindow &window)
 void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
 {
     const float accelerationAmount = 2000.0f;
-    const float decelerationAmount = 2500.0f;
+
+    // friction
+    const float frictionAmount = 1000.0f;
+
+    // forces applied to player
+    const float gravity = 0.0f; // Simulating gravity, set to 0 for the player as it's not needed
+    const float dragCoefficient = 0.80f;
 
     sf::Event event;
     while (window.pollEvent(event))
@@ -54,47 +60,37 @@ void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
         }
     }
 
+    // Gravity affects vertical velocity
+    playerVelocity.y += gravity * deltaTime;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        playerAcceleration.x = -accelerationAmount; // Accelerate to the left
+        playerAcceleration.x = -accelerationAmount;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        playerAcceleration.x = accelerationAmount; // Accelerate to the right
+        playerAcceleration.x = accelerationAmount;
     }
     else
     {
-        // decelerate the player when no keys are pressed
-        if (playerVelocity.x > 0)
-        {
-            playerAcceleration.x = -decelerationAmount;
-        }
-        else if (playerVelocity.x < 0)
-        {
-            playerAcceleration.x = decelerationAmount;
-        }
-        else
-        {
-            playerAcceleration.x = 0;
-        }
+        // playerVelocity.x > 0 ? 1 : -1, returns a 1 if playervelocity.x is positive (or exactly 0) and a -1 if it's negative.
+        playerAcceleration.x = -frictionAmount * (playerVelocity.x > 0 ? 1 : -1) - dragCoefficient * playerVelocity.x;
     }
 
-    // Update velocity and position based on acceleration and velocity.
-    // delta time is important here, since we dont want different results on different framerates
-    playerVelocity.x += playerAcceleration.x * deltaTime;
-    playerPosition.x += playerVelocity.x * deltaTime;
+    playerAcceleration.x -= dragCoefficient * playerVelocity.x;
 
-    // check if the player has hit the edges of the playing field
+    playerVelocity.x += playerAcceleration.x * deltaTime;
+
     const float playerWidth = player.getGlobalBounds().width;
     const float screenWidth = window.getSize().x;
     if (playerPosition.x < 0.0f)
     {
         playerPosition.x = 0.0f;
-        playerVelocity.x = 0; // stop the player if it hits the left edge
+        playerVelocity.x = 0;
     }
     else if (playerPosition.x > screenWidth - playerWidth)
     {
         playerPosition.x = screenWidth - playerWidth;
-        playerVelocity.x = 0; // stop the player if it hits the right edge
+        playerVelocity.x = 0;
     }
 }

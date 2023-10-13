@@ -61,13 +61,15 @@ void Enemy::Update(float deltaTime)
         gameEnded = true;
     }
 
-    // this changes how fast the enemies fall to the ground. Higher is faster
-    const float gravity = 9.8f * 10;
+    // Gravity force (increased to compensate for drag)
+    const float gravityForce = 9.8f * 60;
 
-    // how far the enemy sways from left to right
-    const float swayAmount = 1.0f;
-    // how often the enemy sways from left to right
-    const float swayFrequency = 4.0f;
+    // Drag coefficient
+    const float dragCoefficient = 0.5f;
+
+    // Sway force constants
+    const float swayAmount = 1000.0f;
+    const float swayFrequency = 5.0f;
 
     // Stores accumulated time
     static float timeAccumulator = 0.0f;
@@ -75,19 +77,30 @@ void Enemy::Update(float deltaTime)
 
     for (size_t i = 0; i < enemies.size(); ++i)
     {
-        // Apply gravity for vertical movement
-        enemyVelocities[i].y += gravity * deltaTime;
+        // Apply forces
+        Vector2f netForce(0, gravityForce);  // start with gravity
 
-        // sway enemy left and right based on sine wave and accumulated time
-        enemyPositions[i].x += swayAmount * sin(swayFrequency * timeAccumulator);
+        // Sway force (left and right)
+        netForce.x = swayAmount * sin(swayFrequency * timeAccumulator);
 
-        // Update the enemy's vertical position based on its velocity
-        enemyPositions[i].y += enemyVelocities[i].y * deltaTime;
+        // Calculate air friction or drag (opposes the direction of motion)
+        Vector2f dragForce = -dragCoefficient * enemyVelocities[i];
+        netForce += dragForce;
+
+        // Newton's second law: F = ma, or a = F/m. Assuming m=1 for simplicity.
+        Vector2f acceleration = netForce;
+
+        // Update velocity based on acceleration
+        enemyVelocities[i] += acceleration * deltaTime;
+
+        // Update the enemy's position based on its velocity
+        enemyPositions[i] += enemyVelocities[i] * deltaTime;
 
         // Set the new position
         enemies[i].setPosition(enemyPositions[i].x, enemyPositions[i].y);
     }
 }
+
 
 void Enemy::EnemyCollision(Vector2f playerPosition)
 {

@@ -21,11 +21,8 @@ private:
     void Render();
     void Initialize();
     void ProcessInput(float dt);
-    void CheckEnemiesAtBottom();
     void Update(float deltaTime);
-    void SpawnEnemies(int numEnemies);
     float enemiesSpawnedEachRound = 1;
-    void UpdateEnemies(float deltaTime);
 
     float movementSpeed = 10;
     float enemyRadius = 50;

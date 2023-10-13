@@ -84,35 +84,6 @@ void ParachuteGame::Update(float deltaTime)
     }
 }
 
-// this function handles all the rendering.
-void ParachuteGame::CheckEnemiesAtBottom()
-{
-    // check if enemies have reached the bottom and delete them if so
-    float screenHeight = window.getSize().y;
-
-    // I used auto here and in other if statements/loops, because it automatically detects and assigns a data type to my variable.
-    // this makes it slightly more flexible and easy to handle. This only works with initialized variables.
-    //  this for loop works by initialising the var it, then it sets the condition which is if "it" has reached the end of the list.
-    //  it'll keep looping till the condition is met.
-    for (auto it = enemyClass.enemies.begin(); it != enemyClass.enemies.end();)
-    {
-        sf::Sprite &enemy = *it;
-        // I made a float that gives me the position of the bottom of my enemy, I also subtracted 100 because I thought it looked ugly if they instantly disappear and reappear.
-        float enemyBottom = enemy.getPosition().y - 100;
-
-        if (enemyBottom >= screenHeight)
-        {
-            it = enemyClass.enemies.erase(it);
-            enemyClass.enemiesMissedScore += 1;
-        }
-        else
-        {
-            // if the enemy hasn't hit the ground, it'll move on to the next enemy in the list.
-            ++it;
-        }
-    }
-}
-
 // this is the function that renders all the sprites/texts
 void ParachuteGame::Render()
 {

@@ -97,6 +97,13 @@ public:
     }
 };
 
+//this allows for vector * scalar.
+template <typename T>
+Vector2<T> operator*(const T scalar, const Vector2<T> &vec)
+{
+    return Vector2<T>(scalar * vec.x, scalar * vec.y);
+}
+
 using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
 
