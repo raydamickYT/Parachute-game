@@ -21,14 +21,11 @@ private:
     void Render();
     void Initialize();
     void ProcessInput(float dt);
-    void CheckEnemiesAtBottom();
     void Update(float deltaTime);
-    void SpawnEnemies(int numEnemies);
+    void HandleGameOverInput();
+    void RestartGame();
     float enemiesSpawnedEachRound = 1;
-    void UpdateEnemies(float deltaTime);
 
-    float movementSpeed = 10;
-    float enemyRadius = 50;
     bool enemiesSpawned = false;
 
     Player playerClass;
@@ -38,6 +35,8 @@ private:
 
     sf::Texture BackgroundTexture;
     sf::Sprite Background;
+    sf::Texture RestartButtonTexture;
+    sf::Sprite RestartButton;
     sf::Texture GameOverScreen;
     sf::Sprite GameOver;
 };

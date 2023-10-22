@@ -7,7 +7,6 @@
 // this will initialise the game window with the name that is between the brackets.
 ParachuteGame::ParachuteGame()
     : window(sf::VideoMode(800, 600), "Game & Watch Parachute")
-// playerPosition(Vector2f(100.0f, 400.0f))
 {
 }
 
@@ -27,15 +26,20 @@ void ParachuteGame::Run()
         enemyClass.CheckEnemiesAtBottom(window);
         Render();
 
-        playerClass.PlayerInput(dtSeconds, window);
+        if (enemyClass.gameEnded)
+        {
+            HandleGameOverInput();
+        }
+        else
+        {
+            playerClass.PlayerInput(dtSeconds, window);
+        }
     }
 }
 
 // this is sort of like the start function in unity. it's only called at the start of the game
 void ParachuteGame::Initialize()
 {
-
-    // SpawnEnemies(enemiesSpawnedEachRound);
     enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
     if (!BackgroundTexture.loadFromFile("images/Background.png"))
     {
@@ -45,6 +49,10 @@ void ParachuteGame::Initialize()
     {
         std::cout << "could not load the backgroundimage" << std::endl;
     }
+    if (!RestartButtonTexture.loadFromFile("images/Restart.png"))
+    {
+        std::cout << "could not load the RestartButton image" << std::endl;
+    }
 
     Background.setTexture(BackgroundTexture);
     Background.setScale(window.getSize().x / BackgroundTexture.getSize().x + .15f, window.getSize().y / BackgroundTexture.getSize().y + .15f);
@@ -52,8 +60,11 @@ void ParachuteGame::Initialize()
     GameOver.setTexture(GameOverScreen);
     GameOver.setPosition(window.getSize().x / 15, window.getSize().y / 8);
     GameOver.setScale(window.getSize().x / GameOverScreen.getSize().x + .15f, window.getSize().y / GameOverScreen.getSize().y + .15f);
-}
 
+    RestartButton.setTexture(RestartButtonTexture);
+    RestartButton.setScale(.2, .2);
+    RestartButton.setPosition(window.getSize().x / BackgroundTexture.getSize().x, window.getSize().y- 100);
+}
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
 void ParachuteGame::Update(float deltaTime)
 {
@@ -83,34 +94,35 @@ void ParachuteGame::Update(float deltaTime)
         enemiesSpawned = false;
     }
 }
-
-// this function handles all the rendering.
-void ParachuteGame::CheckEnemiesAtBottom()
+void ParachuteGame::HandleGameOverInput()
 {
-    // check if enemies have reached the bottom and delete them if so
-    float screenHeight = window.getSize().y;
-
-    // I used auto here and in other if statements/loops, because it automatically detects and assigns a data type to my variable.
-    // this makes it slightly more flexible and easy to handle. This only works with initialized variables.
-    //  this for loop works by initialising the var it, then it sets the condition which is if "it" has reached the end of the list.
-    //  it'll keep looping till the condition is met.
-    for (auto it = enemyClass.enemies.begin(); it != enemyClass.enemies.end();)
+    sf::Event event;
+    while (window.pollEvent(event))
     {
-        sf::Sprite &enemy = *it;
-        // I made a float that gives me the position of the bottom of my enemy, I also subtracted 100 because I thought it looked ugly if they instantly disappear and reappear.
-        float enemyBottom = enemy.getPosition().y - 100;
 
-        if (enemyBottom >= screenHeight)
+        // Check for button click
+        if (event.type == sf::Event::MouseButtonPressed)
         {
-            it = enemyClass.enemies.erase(it);
-            enemyClass.enemiesMissedScore += 1;
-        }
-        else
-        {
-            // if the enemy hasn't hit the ground, it'll move on to the next enemy in the list.
-            ++it;
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            if (RestartButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y)))
+            {
+                std::cout << "test" << std::endl;
+                RestartGame();
+            }
         }
     }
+
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R)
+    {
+        RestartGame();
+    }
+}
+void ParachuteGame::RestartGame()
+{
+    enemyClass.EnemyReset(enemiesSpawnedEachRound); // Assuming this method resets enemies and their states.
+    playerClass.PlayerReset();                      // Assuming this method resets player state.
+    // Reset any other game state or variables as needed.
+    enemyClass.gameEnded = false;
 }
 
 // this is the function that renders all the sprites/texts
@@ -124,7 +136,7 @@ void ParachuteGame::Render()
     }
     else
     {
-
+        window.draw(RestartButton);
         window.draw(GameOver);
     }
 

@@ -13,6 +13,7 @@ public:
     void Update(float deltaTime);
     void Render(sf::RenderWindow &window);
     void EnemyCollision(Vector2f playerpos);
+    void EnemyReset(float enemiesSpawnedEachRound);
     void CheckEnemiesAtBottom(sf::RenderWindow &window);
 
     float enemyRadius = 50;

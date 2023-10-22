@@ -29,8 +29,8 @@ void Enemy::SpawnEnemies(float enemiesSpawnedEachRound)
         enemy.setScale(1.5f, 1.5f);
 
         // Generate random position within the screen bounds
-        //reason why this is hardcoded right now is because the screen size is aswell. If I were to ever make this into a program with a variable screen size
-        //I'd defintely use the actual window size to calc this.
+        // reason why this is hardcoded right now is because the screen size is aswell. If I were to ever make this into a program with a variable screen size
+        // I'd defintely use the actual window size to calc this.
         float xPos = 100 + rand() % 400;
         std::cout << xPos << std::endl;
         float yPos = -100;
@@ -61,13 +61,15 @@ void Enemy::Update(float deltaTime)
         gameEnded = true;
     }
 
-    // this changes how fast the enemies fall to the ground. Higher is faster
-    const float gravity = 9.8f * 10;
+    // Gravity force (increased to compensate for drag)
+    const float gravityForce = 9.8f * 60;
 
-    // how far the enemy sways from left to right
-    const float swayAmount = 1.0f;
-    // how often the enemy sways from left to right
-    const float swayFrequency = 4.0f;
+    // Drag coefficient
+    const float dragCoefficient = 0.5f;
+
+    // Sway force constants
+    const float swayAmount = 1000.0f;
+    const float swayFrequency = 5.0f;
 
     // Stores accumulated time
     static float timeAccumulator = 0.0f;
@@ -75,14 +77,24 @@ void Enemy::Update(float deltaTime)
 
     for (size_t i = 0; i < enemies.size(); ++i)
     {
-        // Apply gravity for vertical movement
-        enemyVelocities[i].y += gravity * deltaTime;
+        // Apply forces
+        Vector2f netForce(0, gravityForce); // start with gravity
 
-        // sway enemy left and right based on sine wave and accumulated time
-        enemyPositions[i].x += swayAmount * sin(swayFrequency * timeAccumulator);
+        // Sway force (left and right)
+        netForce.x = swayAmount * sin(swayFrequency * timeAccumulator);
 
-        // Update the enemy's vertical position based on its velocity
-        enemyPositions[i].y += enemyVelocities[i].y * deltaTime;
+        // Calculate air friction or drag (opposes the direction of motion)
+        Vector2f dragForce = -dragCoefficient * enemyVelocities[i];
+        netForce += dragForce;
+
+        // Newton's second law: F = ma, or a = F/m. Assuming m=1 for simplicity.
+        Vector2f acceleration = netForce;
+
+        // Update velocity based on acceleration
+        enemyVelocities[i] += acceleration * deltaTime;
+
+        // Update the enemy's position based on its velocity
+        enemyPositions[i] += enemyVelocities[i] * deltaTime;
 
         // Set the new position
         enemies[i].setPosition(enemyPositions[i].x, enemyPositions[i].y);
@@ -135,6 +147,19 @@ void Enemy::CheckEnemiesAtBottom(sf::RenderWindow &window)
             ++it;
         }
     }
+}
+
+void Enemy::EnemyReset(float enemiesSpawnedEachRound)
+{
+    enemies.clear();
+    enemyVelocities.clear();
+    enemyPositions.clear();
+    score = 0;
+    enemiesMissedScore = 0;
+    gameEnded = false;
+
+    // Spawn initial enemies
+    SpawnEnemies(enemiesSpawnedEachRound);
 }
 
 void Enemy::Render(sf::RenderWindow &window)
