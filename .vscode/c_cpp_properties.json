@@ -1,24 +1,22 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${default}",
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/src/include",
-                "${workspaceFolder}/src/include"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.22000.0",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
-            "configurationProvider": "ms-vscode.makefile-tools"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "windows-gcc-x86",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "windowsSdkVersion": "10.0.22000.0",
+      "cStandard": "${default}",
+      "cppStandard": "${default}",
+      "intelliSenseMode": "windows-gcc-x86",
+      "configurationProvider": "ms-vscode.makefile-tools",
+      "compilerPath": "C:/MinGW/bin/gcc.exe"
+    }
+  ],
+  "version": 4
 }
