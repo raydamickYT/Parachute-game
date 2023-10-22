@@ -7,7 +7,7 @@
 
 Player::Player()
 {
-    // Initialization logic here...
+    // Initialization logic
     if (!playerTexture.loadFromFile("images/Player2.png"))
     {
         std::cout << "could not load the Playerimage" << std::endl;
@@ -24,13 +24,11 @@ Player::Player()
 
 void Player::Update(float deltaTime)
 {
-    sf::Clock clock;
-    sf::Time frameTime = clock.restart();
+    // Update logic
+    sf::Clock frameClock;
+    sf::Time frameTime = frameClock.restart();
     float frameSeconds = frameTime.asSeconds();
 
-    // Update logic...
-    // update the player position based on the the frametimes. I used this because I tried to make the player movement a lot smoother, for some reason its not working.
-    // I gave up on it since it's not a huge bother and the game works fine without the smooth movement.
     playerPosition += playerVelocity * deltaTime;
     player.setPosition(playerPosition.x, playerPosition.y);
 }
@@ -49,11 +47,11 @@ void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
 {
     const float accelerationAmount = 2000.0f;
 
-    // friction
+    // player friction
     const float frictionAmount = 1000.0f;
 
     // forces applied to player
-    const float gravity = 0.0f; // Simulating gravity, set to 0 for the player as it's not needed
+    const float gravity = 0.0f;
     const float dragCoefficient = 0.80f;
 
     sf::Event event;
@@ -65,29 +63,33 @@ void Player::PlayerInput(float deltaTime, sf::RenderWindow &window)
         }
     }
 
-    // Gravity affects vertical velocity
+    // Gravity affects vertical velocity, we don't want it to do that so gravity is set to 0. 
+    //but if we wanted to we could use the gravity to drop the player.
     playerVelocity.y += gravity * deltaTime;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    bool leftKey = sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    bool rightKey = sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+    float screenWidth = window.getSize().x;
+    float playerWidth = player.getGlobalBounds().width;
+
+    if (leftKey && !rightKey)
     {
         playerAcceleration.x = -accelerationAmount;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if (rightKey && !leftKey)
     {
         playerAcceleration.x = accelerationAmount;
     }
-    else
+    else if (!rightKey && !leftKey)
     {
-        // playerVelocity.x > 0 ? 1 : -1, returns a 1 if playervelocity.x is positive (or exactly 0) and a -1 if it's negative.
+        //ternary operator, a handy little operator that allows you to return a value within a line
+        // > 0 checks if playervelocity is greater than 0. ? starts a sort of if statement, so if it's true: it'll return a 1 else it'll return a -1.
         playerAcceleration.x = -frictionAmount * (playerVelocity.x > 0 ? 1 : -1) - dragCoefficient * playerVelocity.x;
     }
 
-    playerAcceleration.x -= dragCoefficient * playerVelocity.x;
-
     playerVelocity.x += playerAcceleration.x * deltaTime;
 
-    const float playerWidth = player.getGlobalBounds().width;
-    const float screenWidth = window.getSize().x;
     if (playerPosition.x < 0.0f)
     {
         playerPosition.x = 0.0f;
