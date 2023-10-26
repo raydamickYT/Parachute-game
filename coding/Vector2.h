@@ -18,7 +18,6 @@ public:
     {
     }
 
-    // Vector2() : x(0), y(0) {}
     // the following functions use two variables which, for example, will be added to each other.
     // in the return of the function there is a calculation that'll return the right value for the calculation.
     // these can be used in situation where, for example, I want to addup a vector2 with itself and something else (example1 += example2)

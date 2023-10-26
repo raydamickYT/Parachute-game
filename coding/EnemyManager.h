@@ -19,8 +19,6 @@ public:
     void CheckEnemiesAtBottom(sf::RenderWindow &window);
     void UpdatePos(float deltaTime);
 
-    //bool gameEnded = false;
-    //int score = 0;
     std::vector<Vector2f> enemyPositions;
     std::vector<Vector2f> enemyVelocities;
     std::vector<sf::Sprite> enemies;
@@ -34,7 +32,6 @@ private:
     ParachuteGame& gameManager;
 
     std::vector<Vector2f> enemySwayAccelerations;
-    // ... Add other necessary attributes
 };
 
 #endif

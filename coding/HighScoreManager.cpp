@@ -5,14 +5,16 @@
 HighScoreManager::HighScoreManager()
 {
     // constructor
-    std::cout << "test" << std::endl;
-    // Check if the highscore.txt file exists
     std::ifstream inFile(filename);
     if (!inFile)
     {
         // If the file doesn't exist, create it and set an initial value of 0
-        std::cout << filename << std::endl;
         SaveHighScore(0);
+        std::cout << filename << std::endl;
+    }
+    else
+    {
+        // do something if you want when the file already exists. not really a point.
     }
 }
 
@@ -26,7 +28,7 @@ void HighScoreManager::SaveHighScore(int highScore)
     }
     else
     {
-        // Handle error (e.g., print a message or log the error)
+        // Handle error 
     }
 }
 int HighScoreManager::LoadHighScore()
@@ -40,7 +42,7 @@ int HighScoreManager::LoadHighScore()
     }
     else
     {
-        // Handle error (e.g., assume it's the first time running and the file doesn't exist yet)
+        // Handle error 
     }
     return highScore;
 }

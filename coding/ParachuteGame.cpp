@@ -7,7 +7,7 @@
 // this will initialise the game window with the name that is between the brackets.
 ParachuteGame::ParachuteGame() : enemyClass(*this), window(sf::VideoMode(800, 600), "Game & Watch Parachute")
 {
-
+    HighScore = HighScoreManager.LoadHighScore();
 }
 
 void ParachuteGame::Run()
@@ -96,6 +96,13 @@ void ParachuteGame::Update(float deltaTime)
 void ParachuteGame::HandleGameOverInput()
 {
     sf::Event event;
+    if (score > HighScore)
+    {
+        HighScore = score;
+        HighScoreManager.SaveHighScore(HighScore);
+        std::cout << HighScore << std::endl;
+    }
+
     while (window.pollEvent(event))
     {
 
@@ -165,6 +172,13 @@ void ParachuteGame::Render()
     EnemiesMissedScoreText.setFillColor(sf::Color::Red);
     EnemiesMissedScoreText.setPosition(10, 30);
 
+    sf::Text HighScoreText;
+    HighScoreText.setFont(font);
+    HighScoreText.setString("HighScore: " + std::to_string(HighScore));
+    HighScoreText.setCharacterSize(24);
+    HighScoreText.setFillColor(sf::Color::White);
+    HighScoreText.setPosition(10, 50);
+
     // const is used here to indicate that the value of var "enemy" can not be adjusted during the loop. it's basically read only
     // for each iteration in the for loop, "enemy" takes the value of the current element in enemies vector.
     // this for loop will keep going through the enemies list until it reaches the end.
@@ -172,6 +186,8 @@ void ParachuteGame::Render()
 
     window.draw(scoreText);
     window.draw(EnemiesMissedScoreText);
+    window.draw(HighScoreText);
+
 
     window.display();
 }
