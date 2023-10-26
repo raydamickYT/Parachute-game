@@ -7,6 +7,7 @@
 // this will initialise the game window with the name that is between the brackets.
 ParachuteGame::ParachuteGame() : enemyClass(*this), window(sf::VideoMode(800, 600), "Game & Watch Parachute")
 {
+
 }
 
 void ParachuteGame::Run()

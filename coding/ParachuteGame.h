@@ -5,6 +5,7 @@
 #include "Vector2.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "HighScoreManager.h"
 
 class ParachuteGame
 {
@@ -30,6 +31,7 @@ private:
 
     Player playerClass;
     EnemyManager enemyClass;
+    HighScoreManager HighScoreManager;
 
     sf::RenderWindow window;
 
