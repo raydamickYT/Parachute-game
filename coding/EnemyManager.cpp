@@ -145,9 +145,6 @@ void EnemyManager::EnemyReset(float enemiesSpawnedEachRound)
     enemies.clear();
     enemyVelocities.clear();
     enemyPositions.clear();
-    gameManager.score = 0;
-    gameManager.enemiesMissedScore = 0;
-    gameManager.gameEnded = false;
 
     // Spawn initial enemies
     SpawnEnemies(enemiesSpawnedEachRound);

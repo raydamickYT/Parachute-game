@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include "Vector2.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "EnemyManager.h"
 
 class ParachuteGame

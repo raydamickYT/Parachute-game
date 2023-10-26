@@ -7,7 +7,6 @@
 Enemy::Enemy()
 {
     // initializing the enemy
-    std::cout << "test message" << std::endl;
     if (!enemyTexture.loadFromFile("images/Enemy.png"))
     {
         std::cout << "Could not load the enemy texture" << std::endl;
