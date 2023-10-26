@@ -24,8 +24,6 @@ public:
     std::vector<Vector2f> enemyVelocities;
     std::vector<sf::Sprite> enemies;
 
-    // ... Add other necessary methods
-
 private:
     bool enemiesSpawned = false;
 

@@ -24,7 +24,6 @@ Player::Player()
 
 void Player::Update(float deltaTime)
 {
-    // Update logic
     sf::Clock frameClock;
     sf::Time frameTime = frameClock.restart();
     float frameSeconds = frameTime.asSeconds();

@@ -12,9 +12,6 @@ public:
     ParachuteGame();
 
     void Run();
-    //int score = 0;
-    //int enemiesMissedScore = 0;
-    //bool gameEnded = false;
 
 private:
     // setup for all the functions used in this script

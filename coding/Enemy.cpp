@@ -87,7 +87,7 @@ void Enemy::Update(float deltaTime)
         Vector2f dragForce = -dragCoefficient * enemyVelocities[i];
         netForce += dragForce;
 
-        // Newton's second law: F = ma, or a = F/m. Assuming m=1 for simplicity.
+        // F = ma, or a = F/m. Assuming m=1.
         Vector2f acceleration = netForce;
 
         // Update velocity based on acceleration

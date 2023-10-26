@@ -65,6 +65,7 @@ void ParachuteGame::Initialize()
     RestartButton.setScale(.2, .2);
     RestartButton.setPosition(window.getSize().x / BackgroundTexture.getSize().x, window.getSize().y- 100);
 }
+
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
 void ParachuteGame::Update(float deltaTime)
 {
@@ -78,14 +79,12 @@ void ParachuteGame::Update(float deltaTime)
     sf::Clock clock;
     sf::Time frameTime = clock.restart();
     float frameSeconds = frameTime.asSeconds();
-    // Update the enemies position.
     enemyClass.Update(deltaTime);
     enemyClass.EnemyCollision(playerClass.playerPosition);
 
     // Update enemy positions
     if (enemyClass.enemies.size() == 0 && !enemyClass.gameEnded)
     {
-        // std::cout << enemiesSpawned << std::endl;
         enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
         enemiesSpawned = true;
     }
@@ -119,9 +118,8 @@ void ParachuteGame::HandleGameOverInput()
 }
 void ParachuteGame::RestartGame()
 {
-    enemyClass.EnemyReset(enemiesSpawnedEachRound); // Assuming this method resets enemies and their states.
-    playerClass.PlayerReset();                      // Assuming this method resets player state.
-    // Reset any other game state or variables as needed.
+    enemyClass.EnemyReset(enemiesSpawnedEachRound);
+    playerClass.PlayerReset();                  
     enemyClass.gameEnded = false;
 }
 
