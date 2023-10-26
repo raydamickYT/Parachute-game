@@ -15,6 +15,7 @@ public:
     void EnemyCollision(Vector2f playerpos);
     void EnemyReset(float enemiesSpawnedEachRound);
     void CheckEnemiesAtBottom(sf::RenderWindow &window);
+    void UpdatePos(float deltaTime);
 
     float enemyRadius = 50;
     bool gameEnded = false;

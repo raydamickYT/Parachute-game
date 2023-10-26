@@ -60,8 +60,12 @@ void Enemy::Update(float deltaTime)
     {
         gameEnded = true;
     }
+    UpdatePos(deltaTime);
+}
 
-    // Gravity force (increased to compensate for drag)
+void Enemy::UpdatePos(float deltaTime)
+{
+        // Gravity force (increased to compensate for drag)
     const float gravityForce = 9.8f * 60;
 
     // Drag coefficient
