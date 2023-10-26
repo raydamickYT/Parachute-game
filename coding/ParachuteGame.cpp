@@ -62,7 +62,7 @@ void ParachuteGame::Initialize()
 
     RestartButton.setTexture(RestartButtonTexture);
     RestartButton.setScale(.2, .2);
-    RestartButton.setPosition(window.getSize().x / BackgroundTexture.getSize().x, window.getSize().y- 100);
+    RestartButton.setPosition(window.getSize().x / BackgroundTexture.getSize().x, window.getSize().y - 100);
 }
 
 // this is just like the update function in unity. I give it a delta time float since some functions called in here need it.
@@ -118,8 +118,10 @@ void ParachuteGame::HandleGameOverInput()
 void ParachuteGame::RestartGame()
 {
     enemyClass.EnemyReset(enemiesSpawnedEachRound);
-    playerClass.PlayerReset();                  
+    playerClass.PlayerReset();
     gameEnded = false;
+    score = 0;
+    enemiesMissedScore = 0;
 }
 
 // this is the function that renders all the sprites/texts
