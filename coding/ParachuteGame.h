@@ -25,9 +25,10 @@ private:
     void Update(float deltaTime);
     void HandleGameOverInput();
     void RestartGame();
-    float enemiesSpawnedEachRound = 1;
 
+    float enemiesSpawnedEachRound = 1;
     bool enemiesSpawned = false;
+    int HighScore = 0;
 
     Player playerClass;
     EnemyManager enemyClass;

@@ -15,7 +15,7 @@ public:
     int test;
 
 private:
-    const std::string filename = "highscore.txt"; // example of a private member variable for the filename
+    const std::string filename = "highscore.txt";
 };
 
 #endif
