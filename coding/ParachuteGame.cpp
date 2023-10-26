@@ -5,8 +5,7 @@
 #include <chrono>
 
 // this will initialise the game window with the name that is between the brackets.
-ParachuteGame::ParachuteGame()
-    : window(sf::VideoMode(800, 600), "Game & Watch Parachute")
+ParachuteGame::ParachuteGame() : enemyClass(*this), window(sf::VideoMode(800, 600), "Game & Watch Parachute")
 {
 }
 
@@ -26,7 +25,7 @@ void ParachuteGame::Run()
         enemyClass.CheckEnemiesAtBottom(window);
         Render();
 
-        if (enemyClass.gameEnded)
+        if (gameEnded)
         {
             HandleGameOverInput();
         }
@@ -71,9 +70,9 @@ void ParachuteGame::Update(float deltaTime)
 {
     playerClass.Update(deltaTime);
 
-    if (enemyClass.enemiesMissedScore >= 3)
+    if (enemiesMissedScore >= 3)
     {
-        enemyClass.gameEnded = true;
+        gameEnded = true;
     }
     // Calculate frame time
     sf::Clock clock;
@@ -83,7 +82,7 @@ void ParachuteGame::Update(float deltaTime)
     enemyClass.EnemyCollision(playerClass.playerPosition);
 
     // Update enemy positions
-    if (enemyClass.enemies.size() == 0 && !enemyClass.gameEnded)
+    if (enemyClass.enemies.size() == 0 && !gameEnded)
     {
         enemyClass.SpawnEnemies(enemiesSpawnedEachRound);
         enemiesSpawned = true;
@@ -120,14 +119,14 @@ void ParachuteGame::RestartGame()
 {
     enemyClass.EnemyReset(enemiesSpawnedEachRound);
     playerClass.PlayerReset();                  
-    enemyClass.gameEnded = false;
+    gameEnded = false;
 }
 
 // this is the function that renders all the sprites/texts
 void ParachuteGame::Render()
 {
     window.clear();
-    if (!enemyClass.gameEnded)
+    if (!gameEnded)
     {
         window.draw(Background);
         playerClass.Render(window);
@@ -150,14 +149,14 @@ void ParachuteGame::Render()
     // the text size/ color and where we want it to be displayed
     sf::Text scoreText;
     scoreText.setFont(font);
-    scoreText.setString("Score: " + std::to_string(enemyClass.score));
+    scoreText.setString("Score: " + std::to_string(score));
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10, 10);
 
     sf::Text EnemiesMissedScoreText;
     EnemiesMissedScoreText.setFont(font);
-    EnemiesMissedScoreText.setString("Enemies Missed: " + std::to_string(enemyClass.enemiesMissedScore));
+    EnemiesMissedScoreText.setString("Enemies Missed: " + std::to_string(enemiesMissedScore));
     EnemiesMissedScoreText.setCharacterSize(24);
     EnemiesMissedScoreText.setFillColor(sf::Color::Red);
     EnemiesMissedScoreText.setPosition(10, 30);

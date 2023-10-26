@@ -5,11 +5,15 @@
 #include "Vector2.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "EnemyManager.h"
 
 class ParachuteGame
 {
 public:
     ParachuteGame();
+    bool gameEnded = false;
+    int score = 0;
+    int enemiesMissedScore = 0;
 
     void Run();
 
@@ -26,8 +30,8 @@ private:
     bool enemiesSpawned = false;
 
     Player playerClass;
-    Enemy enemyClass;
-    
+    EnemyManager enemyClass;
+
     sf::RenderWindow window;
 
     sf::Texture BackgroundTexture;
